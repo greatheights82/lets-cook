@@ -11,10 +11,13 @@ import {
   Body,
   Title,
   Right,
+  Root,
 } from 'native-base'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import FooterMenu from './components/FooterMenu'
 import { AppLoading, Font } from 'expo'
+import { Provider } from 'react-redux'
+import store from './redux'
 
 const styles = StyleSheet.create({
   container: {
@@ -51,23 +54,27 @@ export default class App extends React.Component {
       )
     } else {
       return (
-        <Container style={styles.container}>
-          <Header style={styles.header}>
-            <Left>
-              <Button transparent>
-                <Icon name="menu" />
-              </Button>
-            </Left>
-            <Body>
-              <Title>Header</Title>
-            </Body>
-            <Right />
-          </Header>
-          <Content>
-            <Text style={styles.title}>Let's Cook!</Text>
-          </Content>
-          <FooterMenu />
-        </Container>
+        <Root>
+          <Provider store={store}>
+            <Container style={styles.container}>
+              <Header style={styles.header}>
+                <Left>
+                  <Button transparent>
+                    <Icon name="menu" />
+                  </Button>
+                </Left>
+                <Body>
+                  <Title>Header</Title>
+                </Body>
+                <Right />
+              </Header>
+              <Content>
+                <Text style={styles.title}>Let's Cook!</Text>
+              </Content>
+              <FooterMenu />
+            </Container>
+          </Provider>
+        </Root>
       )
     }
   }
