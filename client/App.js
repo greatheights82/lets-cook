@@ -14,7 +14,7 @@ import {
   Root,
 } from 'native-base'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
-import FooterMenu from './components/FooterMenu'
+import { FooterMenu, Main } from './components'
 import { AppLoading, Font } from 'expo'
 import { Provider } from 'react-redux'
 import store from './redux'
@@ -27,8 +27,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   title: {
+    flex: 1,
     fontSize: 20,
     fontWeight: 'bold',
+    alignItems: 'center',
   },
   header: {
     paddingTop: getStatusBarHeight(),
@@ -69,7 +71,7 @@ export default class App extends React.Component {
                 <Right />
               </Header>
               <Content>
-                <Text style={styles.title}>Let's Cook!</Text>
+                <Main styles={styles} />
               </Content>
               <FooterMenu />
             </Container>
