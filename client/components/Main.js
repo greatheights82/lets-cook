@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Text, Container, Item, Input, H1, Icon } from 'native-base'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, ReactNativeComponentTree } from 'react-native'
 import IngredientButton from './IngredientButton'
 
 //redux
@@ -26,9 +26,21 @@ export class Main extends React.Component {
     this.state = {
       searchTerms: ['carrots', 'chicken', 'curry'],
     }
+    this.removeSearchTerm = this.removeSearchTerm.bind(this)
   }
   handleSearch = async () => {
-    await this.props.performSearch()
+    await this.props.performSearch(this.state.searchTerms)
+  }
+
+  removeSearchTerm(event, ingredient) {
+    console.log('im an on press')
+    console.log('ingredient', ingredient)
+    this.setState(prevState => ({
+      searchTerms: prevState.searchTerms.filter(item => {
+        return item !== ingredient
+      }),
+    }))
+    console.log('new state', this.state)
   }
 
   render() {
@@ -45,17 +57,28 @@ export class Main extends React.Component {
             <IngredientButton
               key={ingredient}
               ingredient={ingredient}
-              style={this.props.styles}
+              value={ingredient}
+              onPress={event => this.removeSearchTerm(event, ingredient)}
             />
-
-            // <Button iconLeft rounded style={styles.button}>
+            // <Button
+            //   iconLeft
+            //   rounded
+            //   success
+            //   style={{
+            //     alignSelf: 'center',
+            //     margin: 10,
+            //   }}
+            //   onPress={this.removeSearchTerm.bind(this)}
+            //   name={ingredient}
+            //   key={ingredient}
+            // >
             //   <Icon name="close" />
-            //   <Text>{ingredient}</Text>
+            //   <Text>ingredient</Text>
             // </Button>
           )
         })}
 
-        {/* <Button
+        <Button
           rounded
           primary
           onPress={this.handleSearch}
@@ -63,14 +86,14 @@ export class Main extends React.Component {
           name="search"
         >
           <Text>SEARCH</Text>
-        </Button> */}
+        </Button>
       </Container>
     )
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  performSearch: () => dispatch(fetchRecipes()),
+  performSearch: ingredients => dispatch(fetchRecipes(ingredients)),
 })
 
 export default connect(
