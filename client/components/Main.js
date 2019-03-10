@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Text, Container, Item, Input, H1 } from 'native-base'
+import { Button, Text, Container, Item, Input, H1, Icon } from 'native-base'
 import { StyleSheet } from 'react-native'
+import IngredientButton from './IngredientButton'
 
 //redux
 import { fetchRecipes, setResults } from '../redux/recipes'
@@ -16,13 +17,14 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'center',
+    margin: 10,
   },
 })
 export class Main extends React.Component {
   constructor() {
     super()
     this.state = {
-      searchTerms: [],
+      searchTerms: ['carrots', 'chicken', 'curry'],
     }
   }
   handleSearch = async () => {
@@ -38,8 +40,22 @@ export class Main extends React.Component {
         <Item rounded style={{ backgroundColor: 'white' }}>
           <Input rounded placeholder="Enter an ingredient" />
         </Item>
+        {this.state.searchTerms.map(ingredient => {
+          return (
+            <IngredientButton
+              key={ingredient}
+              ingredient={ingredient}
+              style={this.props.styles}
+            />
 
-        <Button
+            // <Button iconLeft rounded style={styles.button}>
+            //   <Icon name="close" />
+            //   <Text>{ingredient}</Text>
+            // </Button>
+          )
+        })}
+
+        {/* <Button
           rounded
           primary
           onPress={this.handleSearch}
@@ -47,7 +63,7 @@ export class Main extends React.Component {
           name="search"
         >
           <Text>SEARCH</Text>
-        </Button>
+        </Button> */}
       </Container>
     )
   }

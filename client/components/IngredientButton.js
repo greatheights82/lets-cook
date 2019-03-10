@@ -1,7 +1,23 @@
-import {Component} from 'react'
-import { connect } from 'react-redux'
-import { Button, Text, Container, Item, Input, H1 } from 'native-base'
+import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
+import { Button, Text, Icon } from 'native-base'
 
+class IngredientButton extends Component {
+  render() {
+    return (
+      <Button
+        iconLeft
+        rounded
+        style={{
+          alignSelf: 'center',
+          margin: 10,
+        }}
+      >
+        <Icon name="close" />
+        <Text>{this.props.ingredient}</Text>
+      </Button>
+    )
+  }
+}
 
-export class IngredientButton = 
+export default IngredientButton
