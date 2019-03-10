@@ -6,7 +6,7 @@ import IngredientButton from './IngredientButton'
 import AddIngredients from './AddIngredients'
 
 //redux
-import { fetchRecipes, setResults } from '../redux/recipes'
+import { fetchRecipes, setResults, removeSearchTerms } from '../redux/recipes'
 
 const styles = StyleSheet.create({
   container: {
@@ -31,30 +31,23 @@ export class Main extends React.Component {
   constructor() {
     super()
     this.state = {
-      searchTerms: ['carrots', 'chicken', 'curry', 'potatoes', 'peas'],
       addIngredient: '',
     }
     this.removeSearchTerm = this.removeSearchTerm.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
   }
+
   handleSearch = async () => {
-    await this.props.performSearch(this.state.searchTerms)
+    await this.props.performSearch(this.props.searchTerms)
   }
 
   removeSearchTerm(event, ingredient) {
-    console.log('im an on press')
-    console.log('ingredient', ingredient)
-    this.setState(prevState => ({
-      searchTerms: prevState.searchTerms.filter(item => {
-        return item !== ingredient
-      }),
-    }))
-    console.log('new state', this.state)
+    this.props.removeSearchTerm(ingredient)
   }
 
   handleTextBox = text => {
     console.log(text)
-    this.setState(prevState => ({
+    this.setState(() => ({
       addIngredient: text,
     }))
   }
@@ -71,25 +64,19 @@ export class Main extends React.Component {
   }
 
   render() {
+    const { searchTerms } = this.props
     return (
       <Container style={styles.container}>
         <Text>
           <H1>Let's Cook!</H1>
         </Text>
-        {/* <Item rounded style={{ backgroundColor: 'white' }}>
-          <Input
-            rounded
-            placeholder="Enter an ingredient"
-            onChangeText={this.handleTextBox}
-          />
-        </Item> */}
         <AddIngredients
           onChangeText={this.handleTextBox}
           onSubmit={this.handleTextSubmit}
         />
         <View style={styles.ingredientContainer}>
-          {console.log('searchTerms in map', this.state.searchTerms)}
-          {this.state.searchTerms.map(ingredient => {
+          {/* {console.log('searchTerms in map', searchTerms)} */}
+          {searchTerms.map(ingredient => {
             return (
               <IngredientButton
                 key={ingredient}
@@ -115,11 +102,18 @@ export class Main extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  searchTerms: state.searchTerms,
+})
+
 const mapDispatchToProps = dispatch => ({
   performSearch: ingredients => dispatch(fetchRecipes(ingredients)),
+  removeSearchTerm: ingredientToRemove =>
+    dispatch(removeSearchTerms(ingredientToRemove)),
+  addSearchTerm: newIngredient => dispatch(addSearchTerm(newIngredient)),
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Main)

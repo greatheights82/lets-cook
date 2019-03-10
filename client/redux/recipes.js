@@ -3,6 +3,7 @@ import axios from 'axios'
 // ACTION TYPES
 const SET_RECIPES = 'SET_RECIPES'
 const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM'
+const REMOVE_SEARCH_TERM = 'REMOVE_SEARCH_TERM'
 
 // ACTION CREATORS
 export const setResults = searchResults => ({
@@ -13,6 +14,11 @@ export const setResults = searchResults => ({
 export const addSearchTerm = newIngredient => ({
   type: ADD_SEARCH_TERM,
   newIngredient,
+})
+
+export const removeSearchTerms = ingredientToRemove => ({
+  type: REMOVE_SEARCH_TERM,
+  ingredientToRemove,
 })
 
 // THUNKS
@@ -53,12 +59,17 @@ export const recipes = (state = [], action) => {
   }
 }
 
-export const searchTerms = (state = [], action) => {
+const initialState = ['carrots', 'chicken', 'curry', 'potatoes', 'peas']
+
+export const searchTerms = (state = initialState, action) => {
   switch (action.type) {
     case ADD_SEARCH_TERM:
       return [...state, action.newIngredient]
+    case REMOVE_SEARCH_TERM:
+      return [...state].filter(
+        ingredient => ingredient !== action.ingredientToRemove
+      )
     default:
       return state
   }
 }
-export default recipes
