@@ -8,7 +8,6 @@ const IngredientButton = props => {
       rounded
       success
       style={{
-        alignSelf: 'center',
         margin: 10,
       }}
       onPress={props.onPress}

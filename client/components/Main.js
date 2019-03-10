@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Text, Container, Item, Input, H1, Icon } from 'native-base'
-import { StyleSheet, ReactNativeComponentTree } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import IngredientButton from './IngredientButton'
 
 //redux
@@ -9,8 +9,8 @@ import { fetchRecipes, setResults } from '../redux/recipes'
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    // flex: 1,
+    // flexDirection: 'column',
     backgroundColor: 'green',
     alignItems: 'center',
     // justifyContent: 'center',
@@ -25,6 +25,7 @@ export class Main extends React.Component {
     super()
     this.state = {
       searchTerms: ['carrots', 'chicken', 'curry'],
+      newIngredient: 'test',
     }
     this.removeSearchTerm = this.removeSearchTerm.bind(this)
   }
@@ -43,6 +44,13 @@ export class Main extends React.Component {
     console.log('new state', this.state)
   }
 
+  handleTextBox = text => {
+    console.log(text)
+    this.setState(prevState => ({
+      newIngredient: text,
+    }))
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -50,33 +58,24 @@ export class Main extends React.Component {
           <H1>Let's Cook!</H1>
         </Text>
         <Item rounded style={{ backgroundColor: 'white' }}>
-          <Input rounded placeholder="Enter an ingredient" />
+          <Input
+            rounded
+            placeholder="Enter an ingredient"
+            onChangeText={this.handleTextBox}
+          />
         </Item>
-        {this.state.searchTerms.map(ingredient => {
-          return (
-            <IngredientButton
-              key={ingredient}
-              ingredient={ingredient}
-              value={ingredient}
-              onPress={event => this.removeSearchTerm(event, ingredient)}
-            />
-            // <Button
-            //   iconLeft
-            //   rounded
-            //   success
-            //   style={{
-            //     alignSelf: 'center',
-            //     margin: 10,
-            //   }}
-            //   onPress={this.removeSearchTerm.bind(this)}
-            //   name={ingredient}
-            //   key={ingredient}
-            // >
-            //   <Icon name="close" />
-            //   <Text>ingredient</Text>
-            // </Button>
-          )
-        })}
+        <View style={{ flexDirection: 'row' }}>
+          {this.state.searchTerms.map(ingredient => {
+            return (
+              <IngredientButton
+                key={ingredient}
+                ingredient={ingredient}
+                value={ingredient}
+                onPress={event => this.removeSearchTerm(event, ingredient)}
+              />
+            )
+          })}
+        </View>
 
         <Button
           rounded
