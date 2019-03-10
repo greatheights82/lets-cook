@@ -9,6 +9,7 @@ const IngredientButton = props => {
       success
       style={{
         margin: 10,
+        alignSelf: 'center',
       }}
       onPress={props.onPress}
     >

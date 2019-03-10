@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
     margin: 10,
+    flex: 1,
   },
 })
 export class Main extends React.Component {
   constructor() {
     super()
     this.state = {
-      searchTerms: ['carrots', 'chicken', 'curry'],
+      searchTerms: ['carrots', 'chicken', 'curry', 'potatoes', 'peas'],
       newIngredient: 'test',
     }
     this.removeSearchTerm = this.removeSearchTerm.bind(this)
@@ -64,7 +65,13 @@ export class Main extends React.Component {
             onChangeText={this.handleTextBox}
           />
         </Item>
-        <View style={{ flexDirection: 'row' }}>
+        <View
+          style={{
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
           {this.state.searchTerms.map(ingredient => {
             return (
               <IngredientButton
