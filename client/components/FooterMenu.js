@@ -7,10 +7,10 @@ export default class FooterMenu extends React.Component {
       <Footer>
         <FooterTab>
           <Button>
-            <Text>Plan!</Text>
+            <Text>Text Search</Text>
           </Button>
           <Button>
-            <Text>Saved Recipes</Text>
+            <Text>Image Search</Text>
           </Button>
         </FooterTab>
       </Footer>

@@ -12,6 +12,7 @@ import {
   Title,
   Right,
   Root,
+  Spinner,
 } from 'native-base'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { FooterMenu, Main } from './components'
@@ -21,10 +22,10 @@ import store from './redux'
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: 'green',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     flex: 1,
@@ -32,10 +33,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignItems: 'center',
   },
-  header: {
-    paddingTop: getStatusBarHeight(),
-    height: 54 + getStatusBarHeight(),
-  },
+  // header: {
+  //   paddingTop: getStatusBarHeight(),
+  //   height: 54 + getStatusBarHeight(),
+  // },
 })
 
 export default class App extends React.Component {
@@ -49,17 +50,20 @@ export default class App extends React.Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <AppLoading
-          startAsync={this._loadResources}
-          onFinish={this._handleFinishLoading}
-        />
+        <Container>
+          <AppLoading
+            startAsync={this._loadResources}
+            onFinish={this._handleFinishLoading}
+          />
+          <Spinner color="green" />
+        </Container>
       )
     } else {
       return (
         <Root>
           <Provider store={store}>
-            <Container style={styles.container}>
-              <Header style={styles.header}>
+            <Container>
+              <Header>
                 <Left>
                   <Button transparent>
                     <Icon name="menu" />
@@ -71,7 +75,7 @@ export default class App extends React.Component {
                 <Right />
               </Header>
               <Content>
-                <Main styles={styles} />
+                <Main style={styles.container} />
               </Content>
               <FooterMenu />
             </Container>
