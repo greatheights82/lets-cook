@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Button, Text, Container, Item, Input, H1, Icon } from 'native-base'
 import { StyleSheet, View } from 'react-native'
 import IngredientButton from './IngredientButton'
+import AddIngredients from './AddIngredients'
 
 //redux
 import { fetchRecipes, setResults } from '../redux/recipes'
@@ -20,15 +21,21 @@ const styles = StyleSheet.create({
     margin: 10,
     flex: 1,
   },
+  ingredientContainer: {
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 })
 export class Main extends React.Component {
   constructor() {
     super()
     this.state = {
       searchTerms: ['carrots', 'chicken', 'curry', 'potatoes', 'peas'],
-      newIngredient: 'test',
+      addIngredient: '',
     }
     this.removeSearchTerm = this.removeSearchTerm.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
   }
   handleSearch = async () => {
     await this.props.performSearch(this.state.searchTerms)
@@ -48,8 +55,19 @@ export class Main extends React.Component {
   handleTextBox = text => {
     console.log(text)
     this.setState(prevState => ({
-      newIngredient: text,
+      addIngredient: text,
     }))
+  }
+
+  handleTextSubmit = () => {
+    console.log('im in the handleSubmit')
+    const newIngredient = this.state.addIngredient
+    console.log('newIngredient', newIngredient)
+    console.log('searchTerms', this.state.searchTerms)
+    this.setState(prevState => ({
+      searchTerms: [...prevState.searchTerms].push(newIngredient),
+    }))
+    console.log('searchTerms after push', this.state.searchTerms)
   }
 
   render() {
@@ -58,20 +76,19 @@ export class Main extends React.Component {
         <Text>
           <H1>Let's Cook!</H1>
         </Text>
-        <Item rounded style={{ backgroundColor: 'white' }}>
+        {/* <Item rounded style={{ backgroundColor: 'white' }}>
           <Input
             rounded
             placeholder="Enter an ingredient"
             onChangeText={this.handleTextBox}
           />
-        </Item>
-        <View
-          style={{
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
+        </Item> */}
+        <AddIngredients
+          onChangeText={this.handleTextBox}
+          onSubmit={this.handleTextSubmit}
+        />
+        <View style={styles.ingredientContainer}>
+          {console.log('searchTerms in map', this.state.searchTerms)}
           {this.state.searchTerms.map(ingredient => {
             return (
               <IngredientButton
@@ -91,7 +108,7 @@ export class Main extends React.Component {
           style={styles.button}
           name="search"
         >
-          <Text>SEARCH</Text>
+          <Text>FIND SOME RECIPES!</Text>
         </Button>
       </Container>
     )

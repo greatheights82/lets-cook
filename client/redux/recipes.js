@@ -2,11 +2,17 @@ import axios from 'axios'
 
 // ACTION TYPES
 const SET_RECIPES = 'SET_RECIPES'
+const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM'
 
 // ACTION CREATORS
 export const setResults = searchResults => ({
   type: SET_RECIPES,
   searchResults,
+})
+
+export const addSearchTerm = newIngredient => ({
+  type: ADD_SEARCH_TERM,
+  newIngredient,
 })
 
 // THUNKS
@@ -42,6 +48,15 @@ export const recipes = (state = [], action) => {
   switch (action.type) {
     case SET_RECIPES:
       return action.searchResults.matches
+    default:
+      return state
+  }
+}
+
+export const searchTerms = (state = [], action) => {
+  switch (action.type) {
+    case ADD_SEARCH_TERM:
+      return [...state, action.newIngredient]
     default:
       return state
   }
