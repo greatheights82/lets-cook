@@ -61,22 +61,20 @@ export class ImageSearch extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Content>
-          <Item>
-            <Button
-              rounded
-              primary
-              onPress={this._pickImage}
-              style={styles.button}
-              name="image"
-            >
-              <Text>Image Search</Text>
-            </Button>
-          </Item>
-          <Image />
-        </Content>
-      </Container>
+      <Button
+        rounded
+        primary
+        onPress={this._pickImage}
+        style={{
+          alignSelf: 'center',
+          margin: 10,
+          flex: 1,
+          justifyContent: 'center',
+        }}
+        name="image"
+      >
+        <Text>Image Search</Text>
+      </Button>
     )
   }
 }

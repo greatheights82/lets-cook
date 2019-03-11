@@ -36,6 +36,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  recipesContainer: {
+    borderColor: 'transparent',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    width: '99%',
+  },
 })
 export class Main extends React.Component {
   constructor() {
@@ -129,11 +136,18 @@ export class Main extends React.Component {
               </Button>
             </Item>
             {/* {this.state.searchbyImage && <ImageSearch />} */}
-            <ImageSearch />
+            <Item>
+              <ImageSearch />
+            </Item>
             {!searchResults
               ? ''
               : searchResults.map(recipe => {
-                  return <RecipeCard key={recipe.id} recipe={recipe} />
+                  return (
+                    <RecipeCard
+                      key={searchResults.indexOf(recipe)}
+                      recipe={recipe}
+                    />
+                  )
                 })}
           </Content>
         </Body>
