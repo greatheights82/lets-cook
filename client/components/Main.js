@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native'
 import IngredientButton from './IngredientButton'
 import AddIngredients from './AddIngredients'
 import RecipeCard from './RecipeCard'
+import ImageSearch from './ImageSearch'
 
 //redux
 import {
@@ -41,6 +42,7 @@ export class Main extends React.Component {
     super()
     this.state = {
       addIngredient: '',
+      searchByImage: true,
     }
     // this.handleSearch = this.handleSearch.bind(this)
   }
@@ -70,6 +72,14 @@ export class Main extends React.Component {
     this.setState(() => ({
       addIngredient: '',
     }))
+  }
+
+  toggleImageSearch = () => {
+    console.log('im toggling')
+    let newState = { ...this.state }
+    newState.searchByImage = !newState.searchByImage
+    this.setState(newState)
+    console.log('newstate', this.state.searchByImage)
   }
 
   render() {
@@ -106,7 +116,7 @@ export class Main extends React.Component {
                 style={styles.button}
                 name="search"
               >
-                <Text>SEARCH</Text>
+                <Text>SUMBIT</Text>
               </Button>
               <Button
                 rounded
@@ -118,6 +128,8 @@ export class Main extends React.Component {
                 <Text>RESET</Text>
               </Button>
             </Item>
+            {/* {this.state.searchbyImage && <ImageSearch />} */}
+            <ImageSearch />
             {!searchResults
               ? ''
               : searchResults.map(recipe => {

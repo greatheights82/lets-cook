@@ -1,4 +1,6 @@
 import axios from 'axios'
+import clarifaiApp from '../clarifai'
+import Clarifai from 'clarifai'
 
 // HELPER FUNCTIONS
 const generateQueryString = ingredientArray => {
@@ -6,11 +8,25 @@ const generateQueryString = ingredientArray => {
     return `allowedIngredient[]=${ingredientArray[0]}`
   }
 
-  const queryString = ingredientArray.reduce((accumulator, ingredient) => {
-    return accumulator.concat(`allowedIngredient[]=${ingredient}&`)
-  }, '')
+  const queryString = ingredientArray
+    .reduce((accumulator, ingredient) => {
+      return accumulator.concat(`allowedIngredient[]=${ingredient}&`)
+    }, '')
+    .slice(0, -1)
   console.log('ingredient query', queryString)
   return queryString
+}
+
+const responseParser = response => {
+  console.log('response in parser', response.outputs[0].data)
+  const concepts = response.outputs[0].data.concepts
+
+  return concepts.reduce((accumulator, nextConcept) => {
+    if (nextConcept.value >= 0.55) {
+      accumulator.push(nextConcept.name)
+    }
+    return accumulator
+  }, [])
 }
 
 // ACTION TYPES
@@ -19,6 +35,7 @@ const RESET_RECIPES = 'RESET_RECIPES'
 const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM'
 const REMOVE_SEARCH_TERM = 'REMOVE_SEARCH_TERM'
 const RESET_SEARCH_TERM = 'RESET_SEARCH_TERM'
+const BULK_ADD_SEARCH_TERM = 'BULK_ADD_SEARCH_TERM'
 
 // ACTION CREATORS
 export const setResults = searchResults => ({
@@ -33,6 +50,11 @@ export const resetRecipes = () => ({
 export const addSearchTerm = newIngredient => ({
   type: ADD_SEARCH_TERM,
   newIngredient,
+})
+
+export const bulkAddSearchTerm = ingredientArray => ({
+  type: BULK_ADD_SEARCH_TERM,
+  ingredientArray,
 })
 
 export const removeSearchTerms = ingredientToRemove => ({
@@ -53,6 +75,18 @@ export const fetchRecipes = ingredientArray => async dispatch => {
       `http://api.yummly.com/v1/api/recipes?_app_id=95097531&_app_key=8098a13db96a63ae9a6ec9b49c7c8485&${queryString}`
     )
     dispatch(setResults(searchResults.data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const handleImage = imageBits => async dispatch => {
+  try {
+    const response = await clarifaiApp.models.predict(Clarifai.FOOD_MODEL, {
+      base64: imageBits,
+    })
+    console.log('clarafai response', response)
+    dispatch(bulkAddSearchTerm(responseParser(response)))
   } catch (error) {
     console.error(error)
   }
@@ -82,6 +116,8 @@ export const searchTerms = (state = initialState, action) => {
   switch (action.type) {
     case ADD_SEARCH_TERM:
       return [...state, action.newIngredient.toLowerCase()]
+    case BULK_ADD_SEARCH_TERM:
+      return [...state, ...action.ingredientArray]
     case REMOVE_SEARCH_TERM:
       return [...state].filter(
         ingredient => ingredient !== action.ingredientToRemove

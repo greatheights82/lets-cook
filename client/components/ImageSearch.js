@@ -1,14 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Image, StyleSheet } from 'react-native'
 import { Text, Content, Container, Item, H1, Button } from 'native-base'
 import { ImagePicker, Permissions } from 'expo'
-import { checkPermissionsAsync } from '../utils'
-import { StyleSheet } from 'react-native'
-import IngredientButton from './IngredientButton'
-import AddIngredients from './AddIngredients'
 
 //redux
-import { fetchRecipes, setResults } from '../redux/recipes'
+import { handleImage } from '../redux/recipes'
 
 const styles = StyleSheet.create({
   container: {
@@ -22,13 +19,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 })
-export class Main extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      addIngredient: '',
-    }
-  }
+export class ImageSearch extends React.Component {
   handleSearch = async () => {
     await this.props.performSearch()
   }
@@ -54,74 +45,47 @@ export class Main extends React.Component {
 
   _pickImage = async () => {
     const status = await this.checkCameraPermissionsAsync('CAMERA_ROLL')
+    let searchImage = {}
     if (status) {
-      await ImagePicker.launchImageLibraryAsync({
+      searchImage = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: 'Images',
+        base64: true,
+        quality: 0.5,
       })
     }
-    // if(!setResults.cancelled){
-    //   this.setState({image:setResults.uri})
-    // }
+    // console.log(searchImage)
+    if (!searchImage.cancelled) {
+      this.props.clarifaiImage(searchImage.base64)
+    }
   }
 
   render() {
     return (
-      const { searchTerms, searchResults } = this.props
       <Container style={styles.container}>
-        <Body>
-          <Content>
-            <Text style={{ alignSelf: 'center' }}>
-              <H1>Let's Cook!</H1>
-            </Text>
-            <AddIngredients
-              onChangeText={this.handleTextBox}
-              onSubmit={this.handleTextSubmit}
-              value={this.state.addIngredient}
-            />
-            <Item style={styles.ingredientContainer}>
-              {searchTerms.map(ingredient => {
-                return (
-                  <IngredientButton
-                    key={ingredient}
-                    ingredient={ingredient}
-                    value={ingredient}
-                    onPress={event => this.removeSearchTerm(event, ingredient)}
-                  />
-                )
-              })}
-            </Item>
-            <Item>
-              <Button
-                rounded
-                primary
-                onPress={this._pickImage}
-                style={styles.button}
-                name="image"
-              >
-                <Text>Upload and Image</Text>
-              </Button>
-            </Item>
-          </Content>
-        </Body>
+        <Content>
+          <Item>
+            <Button
+              rounded
+              primary
+              onPress={this._pickImage}
+              style={styles.button}
+              name="image"
+            >
+              <Text>Image Search</Text>
+            </Button>
+          </Item>
+          <Image />
+        </Content>
       </Container>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  searchResults: state.recipes,
-  searchTerms: state.searchTerms,
-})
-
 const mapDispatchToProps = dispatch => ({
-  performSearch: ingredients => dispatch(fetchRecipes(ingredients)),
-  removeSearchTerm: ingredientToRemove =>
-    dispatch(removeSearchTerms(ingredientToRemove)),
-  addSearchTerm: newIngredient => dispatch(addSearchTerm(newIngredient)),
-  reset: () => dispatch(resetRecipes()),
+  clarifaiImage: imageBits => dispatch(handleImage(imageBits)),
 })
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
-)(Main)
+)(ImageSearch)
