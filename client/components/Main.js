@@ -6,7 +6,11 @@ import IngredientButton from './IngredientButton'
 import AddIngredients from './AddIngredients'
 
 //redux
-import { fetchRecipes, setResults, removeSearchTerms } from '../redux/recipes'
+import {
+  fetchRecipes,
+  addSearchTerm,
+  removeSearchTerms,
+} from '../redux/recipes'
 
 const styles = StyleSheet.create({
   container: {
@@ -57,9 +61,7 @@ export class Main extends React.Component {
     const newIngredient = this.state.addIngredient
     console.log('newIngredient', newIngredient)
     console.log('searchTerms', this.state.searchTerms)
-    this.setState(prevState => ({
-      searchTerms: [...prevState.searchTerms].push(newIngredient),
-    }))
+    this.props.addSearchTerm(newIngredient)
     console.log('searchTerms after push', this.state.searchTerms)
   }
 
