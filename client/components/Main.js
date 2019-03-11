@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   ingredientContainer: {
     flexWrap: 'wrap',
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 export class Main extends React.Component {
@@ -37,15 +37,14 @@ export class Main extends React.Component {
     this.state = {
       addIngredient: '',
     }
-    this.removeSearchTerm = this.removeSearchTerm.bind(this)
-    this.handleSearch = this.handleSearch.bind(this)
+    // this.handleSearch = this.handleSearch.bind(this)
   }
 
   handleSearch = async () => {
     await this.props.performSearch(this.props.searchTerms)
   }
 
-  removeSearchTerm(event, ingredient) {
+  removeSearchTerm = (event, ingredient) => {
     this.props.removeSearchTerm(ingredient)
   }
 
@@ -57,12 +56,8 @@ export class Main extends React.Component {
   }
 
   handleTextSubmit = () => {
-    console.log('im in the handleSubmit')
     const newIngredient = this.state.addIngredient
-    console.log('newIngredient', newIngredient)
-    console.log('searchTerms', this.state.searchTerms)
     this.props.addSearchTerm(newIngredient)
-    console.log('searchTerms after push', this.state.searchTerms)
   }
 
   render() {
@@ -77,7 +72,6 @@ export class Main extends React.Component {
           onSubmit={this.handleTextSubmit}
         />
         <View style={styles.ingredientContainer}>
-          {/* {console.log('searchTerms in map', searchTerms)} */}
           {searchTerms.map(ingredient => {
             return (
               <IngredientButton
