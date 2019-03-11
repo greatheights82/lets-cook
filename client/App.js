@@ -70,14 +70,14 @@ export default class App extends React.Component {
                   </Button>
                 </Left>
                 <Body>
-                  <Title>Header</Title>
+                  <Title>Let's Cook!</Title>
                 </Body>
                 <Right />
               </Header>
               <Content>
                 <Main style={styles.container} />
               </Content>
-              <FooterMenu />
+              {/* <FooterMenu /> */}
             </Container>
           </Provider>
         </Root>

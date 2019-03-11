@@ -5,6 +5,7 @@ const AddIngredients = props => {
   return (
     <Item
       style={{
+        margin: 5,
         borderColor: 'transparent',
         flexDirection: 'row',
         flexWrap: 'nowrap',

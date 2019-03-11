@@ -26,13 +26,10 @@ export class ImageSearch extends React.Component {
 
   checkCameraPermissionsAsync = async () => {
     const get = await Permissions.getAsync(Permissions.CAMERA_ROLL)
-    console.log('get response', get)
     if (get.status !== 'granted') {
       try {
         const ask = await Permissions.askAsync(Permissions.CAMERA_ROLL)
-        console.log('ask response', ask)
         if (ask.status === 'denied') {
-          console.log('im false')
           return false
         }
       } catch (error) {
@@ -53,7 +50,6 @@ export class ImageSearch extends React.Component {
         quality: 0.5,
       })
     }
-    // console.log(searchImage)
     if (!searchImage.cancelled) {
       this.props.clarifaiImage(searchImage.base64)
     }

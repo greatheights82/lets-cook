@@ -67,7 +67,6 @@ export class Main extends React.Component {
   }
 
   handleTextBox = text => {
-    console.log(text)
     this.setState(() => ({
       addIngredient: text,
     }))
@@ -82,11 +81,9 @@ export class Main extends React.Component {
   }
 
   toggleImageSearch = () => {
-    console.log('im toggling')
     let newState = { ...this.state }
     newState.searchByImage = !newState.searchByImage
     this.setState(newState)
-    console.log('newstate', this.state.searchByImage)
   }
 
   render() {
@@ -95,9 +92,9 @@ export class Main extends React.Component {
       <Container style={styles.container}>
         <Body>
           <Content>
-            <Text style={{ alignSelf: 'center' }}>
+            {/* <Text style={{ alignSelf: 'center' }}>
               <H1>Let's Cook!</H1>
-            </Text>
+            </Text> */}
             <AddIngredients
               onChangeText={this.handleTextBox}
               onSubmit={this.handleTextSubmit}

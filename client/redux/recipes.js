@@ -13,12 +13,10 @@ const generateQueryString = ingredientArray => {
       return accumulator.concat(`allowedIngredient[]=${ingredient}&`)
     }, '')
     .slice(0, -1)
-  console.log('ingredient query', queryString)
   return queryString
 }
 
 const responseParser = response => {
-  console.log('response in parser', response.outputs[0].data)
   const concepts = response.outputs[0].data.concepts
 
   return concepts.reduce((accumulator, nextConcept) => {
@@ -85,7 +83,6 @@ export const handleImage = imageBits => async dispatch => {
     const response = await clarifaiApp.models.predict(Clarifai.FOOD_MODEL, {
       base64: imageBits,
     })
-    console.log('clarafai response', response)
     dispatch(bulkAddSearchTerm(responseParser(response)))
   } catch (error) {
     console.error(error)
