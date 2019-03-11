@@ -1,31 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Text, Container, Item, Input, H1, Icon } from 'native-base'
-import { StyleSheet, View } from 'react-native'
+import { Button, Text, Container, Item, H1, Content, Body } from 'native-base'
+import { StyleSheet, ScrollView } from 'react-native'
 import IngredientButton from './IngredientButton'
 import AddIngredients from './AddIngredients'
+import RecipeCard from './RecipeCard'
+import RecipeList from './RecipeList'
 
 //redux
 import {
   fetchRecipes,
   addSearchTerm,
   removeSearchTerms,
+  resetRecipes,
 } from '../redux/recipes'
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // flexDirection: 'column',
+    flex: 1,
+    flexDirection: 'column',
     backgroundColor: 'green',
     alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
   button: {
     alignSelf: 'center',
     margin: 10,
     flex: 1,
+    justifyContent: 'center',
   },
   ingredientContainer: {
+    borderColor: 'transparent',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -42,6 +48,10 @@ export class Main extends React.Component {
 
   handleSearch = async () => {
     await this.props.performSearch(this.props.searchTerms)
+  }
+
+  handleReset = async () => {
+    this.props.reset()
   }
 
   removeSearchTerm = (event, ingredient) => {
@@ -61,44 +71,64 @@ export class Main extends React.Component {
   }
 
   render() {
-    const { searchTerms } = this.props
+    const { searchTerms, searchResults } = this.props
     return (
       <Container style={styles.container}>
-        <Text>
-          <H1>Let's Cook!</H1>
-        </Text>
-        <AddIngredients
-          onChangeText={this.handleTextBox}
-          onSubmit={this.handleTextSubmit}
-        />
-        <View style={styles.ingredientContainer}>
-          {searchTerms.map(ingredient => {
-            return (
-              <IngredientButton
-                key={ingredient}
-                ingredient={ingredient}
-                value={ingredient}
-                onPress={event => this.removeSearchTerm(event, ingredient)}
-              />
-            )
-          })}
-        </View>
-
-        <Button
-          rounded
-          primary
-          onPress={this.handleSearch}
-          style={styles.button}
-          name="search"
-        >
-          <Text>FIND SOME RECIPES!</Text>
-        </Button>
+        <Body>
+          <Content>
+            <Text style={{ alignSelf: 'center' }}>
+              <H1>Let's Cook!</H1>
+            </Text>
+            <AddIngredients
+              onChangeText={this.handleTextBox}
+              onSubmit={this.handleTextSubmit}
+            />
+            <Item style={styles.ingredientContainer}>
+              {searchTerms.map(ingredient => {
+                return (
+                  <IngredientButton
+                    key={ingredient}
+                    ingredient={ingredient}
+                    value={ingredient}
+                    onPress={event => this.removeSearchTerm(event, ingredient)}
+                  />
+                )
+              })}
+            </Item>
+            <Item style={styles.ingredientContainer}>
+              <Button
+                rounded
+                primary
+                onPress={this.handleSearch}
+                style={styles.button}
+                name="search"
+              >
+                <Text>FIND SOME RECIPES!</Text>
+              </Button>
+              <Button
+                rounded
+                primary
+                onPress={this.handleReset}
+                style={styles.button}
+                name="reset"
+              >
+                <Text>RESET</Text>
+              </Button>
+            </Item>
+            {!searchResults
+              ? ''
+              : searchResults.map(recipe => {
+                  return <RecipeCard key={recipe.id} recipe={recipe} />
+                })}
+          </Content>
+        </Body>
       </Container>
     )
   }
 }
 
 const mapStateToProps = state => ({
+  searchResults: state.recipes,
   searchTerms: state.searchTerms,
 })
 
@@ -107,6 +137,7 @@ const mapDispatchToProps = dispatch => ({
   removeSearchTerm: ingredientToRemove =>
     dispatch(removeSearchTerms(ingredientToRemove)),
   addSearchTerm: newIngredient => dispatch(addSearchTerm(newIngredient)),
+  reset: () => dispatch(resetRecipes()),
 })
 
 export default connect(

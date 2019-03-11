@@ -9,6 +9,7 @@ const AddIngredients = props => {
         flexDirection: 'row',
         flexWrap: 'nowrap',
         alignContent: 'center',
+        alignSelf: 'center',
       }}
     >
       <Item

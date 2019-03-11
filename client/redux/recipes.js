@@ -2,6 +2,7 @@ import axios from 'axios'
 
 // ACTION TYPES
 const SET_RECIPES = 'SET_RECIPES'
+const RESET_RECIPES = 'RESET_RECIPES'
 const ADD_SEARCH_TERM = 'ADD_SEARCH_TERM'
 const REMOVE_SEARCH_TERM = 'REMOVE_SEARCH_TERM'
 
@@ -9,6 +10,10 @@ const REMOVE_SEARCH_TERM = 'REMOVE_SEARCH_TERM'
 export const setResults = searchResults => ({
   type: SET_RECIPES,
   searchResults,
+})
+
+export const resetRecipes = () => ({
+  type: RESET_RECIPES,
 })
 
 export const addSearchTerm = newIngredient => ({
@@ -54,6 +59,8 @@ export const recipes = (state = [], action) => {
   switch (action.type) {
     case SET_RECIPES:
       return action.searchResults.matches
+    case RESET_RECIPES:
+      return []
     default:
       return state
   }
