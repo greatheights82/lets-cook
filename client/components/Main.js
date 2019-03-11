@@ -120,7 +120,7 @@ export class Main extends React.Component {
                 style={styles.button}
                 name="search"
               >
-                <Text>SUMBIT</Text>
+                <Text>SUBMIT</Text>
               </Button>
               <Button
                 rounded
