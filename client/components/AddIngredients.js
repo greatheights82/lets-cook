@@ -22,6 +22,7 @@ const AddIngredients = props => {
         <Input
           rounded
           placeholder="Add an ingredient to your search"
+          value={props.value}
           onChangeText={props.onChangeText}
           onSubmitEditing={props.onSubmit}
         />

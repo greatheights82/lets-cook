@@ -50,7 +50,7 @@ export class Main extends React.Component {
     await this.props.performSearch(this.props.searchTerms)
   }
 
-  handleReset = async () => {
+  handleReset = () => {
     this.props.reset()
   }
 
@@ -68,6 +68,9 @@ export class Main extends React.Component {
   handleTextSubmit = () => {
     const newIngredient = this.state.addIngredient
     this.props.addSearchTerm(newIngredient)
+    this.setState(() => ({
+      addIngredient: '',
+    }))
   }
 
   render() {
@@ -82,6 +85,7 @@ export class Main extends React.Component {
             <AddIngredients
               onChangeText={this.handleTextBox}
               onSubmit={this.handleTextSubmit}
+              value={this.state.addIngredient}
             />
             <Item style={styles.ingredientContainer}>
               {searchTerms.map(ingredient => {
@@ -103,7 +107,7 @@ export class Main extends React.Component {
                 style={styles.button}
                 name="search"
               >
-                <Text>FIND SOME RECIPES!</Text>
+                <Text>SEARCH</Text>
               </Button>
               <Button
                 rounded
