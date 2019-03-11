@@ -1,20 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-  Footer,
-  FooterTab,
-  Button,
-  Text,
-  Content,
-  Container,
-  Toast,
-  Item,
-  Input,
-  H1,
-} from 'native-base'
+import { Text, Content, Container, Item, H1, Button } from 'native-base'
 import { ImagePicker, Permissions } from 'expo'
 import { checkPermissionsAsync } from '../utils'
 import { StyleSheet } from 'react-native'
+import IngredientButton from './IngredientButton'
+import AddIngredients from './AddIngredients'
 
 //redux
 import { fetchRecipes, setResults } from '../redux/recipes'
@@ -76,42 +67,60 @@ export class Main extends React.Component {
   render() {
     return (
       <Container style={styles.container}>
-        <Text>
-          <H1>Let's Cook!</H1>
-        </Text>
-        <Item rounded style={{ backgroundColor: 'white' }}>
-          <Input rounded placeholder="Enter an ingredient" />
-        </Item>
-
-        <Button
-          rounded
-          primary
-          onPress={this.handleSearch}
-          style={styles.button}
-          name="search"
-        >
-          <Text>SEARCH</Text>
-        </Button>
-
-        {/* <Button
-          rounded
-          primary
-          onPress={this._pickImage}
-          style={styles.button}
-          name="image"
-        >
-          <Text>IMAGE PICKER</Text>
-        </Button> */}
+        <Body>
+          <Content>
+            <Text style={{ alignSelf: 'center' }}>
+              <H1>Let's Cook!</H1>
+            </Text>
+            <AddIngredients
+              onChangeText={this.handleTextBox}
+              onSubmit={this.handleTextSubmit}
+              value={this.state.addIngredient}
+            />
+            <Item style={styles.ingredientContainer}>
+              {searchTerms.map(ingredient => {
+                return (
+                  <IngredientButton
+                    key={ingredient}
+                    ingredient={ingredient}
+                    value={ingredient}
+                    onPress={event => this.removeSearchTerm(event, ingredient)}
+                  />
+                )
+              })}
+            </Item>
+            <Item>
+              <Button
+                rounded
+                primary
+                onPress={this._pickImage}
+                style={styles.button}
+                name="image"
+              >
+                <Text>Upload and Image</Text>
+              </Button>
+            </Item>
+          </Content>
+        </Body>
       </Container>
     )
   }
 }
 
+const mapStateToProps = state => ({
+  searchResults: state.recipes,
+  searchTerms: state.searchTerms,
+})
+
 const mapDispatchToProps = dispatch => ({
-  performSearch: () => dispatch(fetchRecipes()),
+  performSearch: ingredients => dispatch(fetchRecipes(ingredients)),
+  removeSearchTerm: ingredientToRemove =>
+    dispatch(removeSearchTerms(ingredientToRemove)),
+  addSearchTerm: newIngredient => dispatch(addSearchTerm(newIngredient)),
+  reset: () => dispatch(resetRecipes()),
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Main)

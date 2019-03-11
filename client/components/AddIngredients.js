@@ -10,12 +10,14 @@ const AddIngredients = props => {
         flexWrap: 'nowrap',
         alignContent: 'center',
         alignSelf: 'center',
+        justifyContent: 'center',
+        width: '100%',
       }}
     >
       <Item
         rounded
         style={{
-          width: '70%',
+          width: '80%',
           backgroundColor: 'white',
         }}
       >

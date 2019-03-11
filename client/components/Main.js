@@ -1,11 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Text, Container, Item, H1, Content, Body } from 'native-base'
-import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet } from 'react-native'
 import IngredientButton from './IngredientButton'
 import AddIngredients from './AddIngredients'
 import RecipeCard from './RecipeCard'
-import RecipeList from './RecipeList'
 
 //redux
 import {
