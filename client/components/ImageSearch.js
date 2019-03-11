@@ -26,7 +26,7 @@ export class Main extends React.Component {
   constructor() {
     super()
     this.state = {
-      searchTerms: [],
+      addIngredient: '',
     }
   }
   handleSearch = async () => {
@@ -66,6 +66,7 @@ export class Main extends React.Component {
 
   render() {
     return (
+      const { searchTerms, searchResults } = this.props
       <Container style={styles.container}>
         <Body>
           <Content>
