@@ -1,9 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import {
   Container,
   Content,
-  Footer,
   Header,
   Button,
   Icon,
@@ -14,8 +13,7 @@ import {
   Root,
   Spinner,
 } from 'native-base'
-import { getStatusBarHeight } from 'react-native-status-bar-height'
-import { FooterMenu, Main } from './components'
+import { Main } from './components'
 import { AppLoading, Font } from 'expo'
 import { Provider } from 'react-redux'
 import store from './redux'
@@ -33,10 +31,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignItems: 'center',
   },
-  // header: {
-  //   paddingTop: getStatusBarHeight(),
-  //   height: 54 + getStatusBarHeight(),
-  // },
 })
 
 export default class App extends React.Component {
@@ -77,7 +71,6 @@ export default class App extends React.Component {
               <Content>
                 <Main style={styles.container} />
               </Content>
-              {/* <FooterMenu /> */}
             </Container>
           </Provider>
         </Root>

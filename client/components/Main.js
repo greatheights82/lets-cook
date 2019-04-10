@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Text, Container, Item, H1, Content, Body } from 'native-base'
+import { Button, Text, Container, Item, Content, Body } from 'native-base'
 import { StyleSheet } from 'react-native'
 import IngredientButton from './IngredientButton'
 import AddIngredients from './AddIngredients'
@@ -51,7 +51,7 @@ export class Main extends React.Component {
       addIngredient: '',
       searchByImage: true,
     }
-    // this.handleSearch = this.handleSearch.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
   }
 
   handleSearch = async () => {
@@ -92,9 +92,6 @@ export class Main extends React.Component {
       <Container style={styles.container}>
         <Body>
           <Content>
-            {/* <Text style={{ alignSelf: 'center' }}>
-              <H1>Let's Cook!</H1>
-            </Text> */}
             <AddIngredients
               onChangeText={this.handleTextBox}
               onSubmit={this.handleTextSubmit}
@@ -132,20 +129,21 @@ export class Main extends React.Component {
                 <Text>RESET</Text>
               </Button>
             </Item>
-            {/* {this.state.searchbyImage && <ImageSearch />} */}
             <Item>
               <ImageSearch />
             </Item>
-            {!searchResults
-              ? ''
-              : searchResults.map(recipe => {
-                  return (
-                    <RecipeCard
-                      key={searchResults.indexOf(recipe)}
-                      recipe={recipe}
-                    />
-                  )
-                })}
+            {!searchResults.length ? (
+              <Text>''</Text>
+            ) : (
+              searchResults.map(recipe => {
+                return (
+                  <RecipeCard
+                    key={searchResults.indexOf(recipe)}
+                    recipe={recipe}
+                  />
+                )
+              })
+            )}
           </Content>
         </Body>
       </Container>

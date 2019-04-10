@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": null,
-  "packagerPid": null,
+  "packagerPort": 19001,
+  "packagerPid": 11064,
   "expoServerNgrokUrl": "https://y8-fgq.greatheights.lets-cook.exp.direct",
   "packagerNgrokUrl": "https://packager.y8-fgq.greatheights.lets-cook.exp.direct",
-  "ngrokPid": 6152,
+  "ngrokPid": 11079,
   "webpackServerPort": null
 }
